@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolnut LifeStyle</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Cyberpunk & Luxury Custom Styles */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --luxury-gold: #ffd700;
+            --bg-dark: #050505;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.08) 0%, transparent 25%);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', 'Sarabun', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-cyber {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Glassmorphism Card */
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Neon Glow Effects */
+        .glow-text-blue {
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+        .glow-text-gold {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .cyber-btn {
+            position: relative;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            border: 1px solid var(--neon-blue);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .cyber-btn:hover {
+            background: rgba(0, 243, 255, 0.15);
+            box-shadow: 0 0 15px var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .luxury-btn {
+            border-color: var(--luxury-gold);
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            color: var(--luxury-gold);
+        }
+
+        .luxury-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 15px var(--luxury-gold);
+        }
+
+        /* Link Card Styles */
+        .link-card {
+            background: rgba(30, 30, 30, 0.6);
+            border-left: 3px solid var(--neon-blue);
+            transition: all 0.3s ease;
+        }
+        .link-card:hover {
+            border-left: 3px solid var(--neon-pink);
+            background: rgba(40, 40, 40, 0.8);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--neon-blue);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
+    </style>
+</head>
+<body class="flex flex-col items-center">
+
+    <!-- Header -->
+    <header class="w-full max-w-6xl p-6 flex justify-between items-center z-10 relative">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-microchip text-4xl text-[#00f3ff] animate-pulse"></i>
+            <div>
+                <h1 class="font-cyber text-2xl md:text-3xl font-bold tracking-wider text-white">
+                    COOLNUT <span class="text-[#ffd700] glow-text-gold">LIFESTYLE</span>
+                </h1>
+                <p class="text-xs text-gray-400 tracking-[0.2em] uppercase">Hyperlink Gateway System</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-3">
+            <button onclick="openAddModal()" class="cyber-btn luxury-btn px-4 py-2 rounded text-sm font-bold">
+                <i class="fa-solid fa-plus mr-2"></i> ADD LINK
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-6xl p-6 z-10 flex-grow">
+        
+        <!-- Status Bar removed as API is hardcoded -->
+
+        <!-- Search / Filter (Optional decoration) -->
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent opacity-30 mb-8"></div>
+
+        <!-- Links Grid -->
+        <div id="links-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Content Will Be Injected Here -->
+            
+            <!-- Loading State -->
+            <div id="loading-indicator" class="col-span-full flex flex-col items-center justify-center py-20 hidden">
+                <div class="loader mb-4"></div>
+                <p class="text-[#00f3ff] font-cyber tracking-widest animate-pulse">SYSTEM SYNCHRONIZING...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="col-span-full text-center py-20 hidden">
+                <i class="fa-solid fa-database text-6xl text-gray-700 mb-4"></i>
+                <p class="text-gray-500">NO DATA FOUND IN DATABASE</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full p-6 text-center text-gray-600 text-xs font-cyber z-10">
+        <p>&copy; 2024 COOLNUT LIFESTYLE. ALL RIGHTS RESERVED. <span class="text-[#00f3ff]">SYSTEM ONLINE</span></p>
+    </footer>
+
+    <!-- ADD LINK MODAL -->
+    <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-8 rounded-xl relative border border-[#ff00ff]/30 shadow-[0_0_30px_rgba(255,0,255,0.1)]">
+            <h2 class="font-cyber text-2xl text-[#ff00ff] mb-6 border-b border-[#ff00ff]/30 pb-2">ADD NEW NODE</h2>
+            
+            <form id="add-form" onsubmit="submitLink(event)">
+                <div class="mb-4">
+                    <label class="block text-xs text-[#00f3ff] mb-1 uppercase tracking-wider">Web Name</label>
+                    <input type="text" id="web-name" required placeholder="Ex. Youtube"
+                        class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 rounded focus:border-[#ff00ff] focus:outline-none focus:shadow-[0_0_10px_rgba(255,0,255,0.3)] transition-all">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-xs text-[#00f3ff] mb-1 uppercase tracking-wider">URL Destination</label>
+                    <input type="url" id="web-url" required placeholder="https://..."
+                        class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 rounded focus:border-[#ff00ff] focus:outline-none focus:shadow-[0_0_10px_rgba(255,0,255,0.3)] transition-all">
+                </div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('add-modal')" class="px-4 py-2 text-gray-400 hover:text-white transition-colors">CANCEL</button>
+                    <button type="submit" id="btn-save" class="bg-[#ff00ff]/20 border border-[#ff00ff] text-[#ff00ff] px-6 py-2 rounded hover:bg-[#ff00ff] hover:text-black transition-all font-bold tracking-wider">
+                        <i class="fa-solid fa-save mr-2"></i> INJECT DATA
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        // Config: Hardcoded API URL
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbx6u7vKWv5gmxoJ4OdhZDb6avzNGesml9-paKA941SbQ2zVIcjCHVrW40ySDjMJPk3j/exec';
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLinks();
+        });
+
+        // Fetch Data from Sheet
+        function fetchLinks() {
+            const loader = document.getElementById('loading-indicator');
+            const container = document.getElementById('links-container');
+            const emptyState = document.getElementById('empty-state');
+            
+            loader.classList.remove('hidden');
+            container.innerHTML = ''; // Clear current
+            container.appendChild(loader); 
+            container.appendChild(emptyState);
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    loader.classList.add('hidden');
+                    if (data.length === 0) {
+                        emptyState.classList.remove('hidden');
+                    } else {
+                        emptyState.classList.add('hidden');
+                        renderLinks(data);
+                    }
+                })
+                .catch(error => {
+                    loader.classList.add('hidden');
+                    // Show error in console but keep UI clean, maybe show empty state
+                    console.error('Error connecting to database:', error);
+                    emptyState.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-6xl text-red-500 mb-4"></i><p class="text-red-400">CONNECTION ERROR</p>`;
+                    emptyState.classList.remove('hidden');
+                });
+        }
+
+        // Render Buttons
+        function renderLinks(links) {
+            const container = document.getElementById('links-container');
+            
+            // Remove loader/empty state from view temporarily to append items
+            container.innerHTML = '';
+
+            links.forEach(link => {
+                const card = document.createElement('a');
+                card.href = link.url;
+                card.target = "_blank";
+                card.className = "link-card block p-6 rounded-r-xl relative group overflow-hidden decoration-none";
+                
+                // Icon (Random or specific logic can be added)
+                const icon = getIconForUrl(link.url);
+
+                card.innerHTML = `
+                    <div class="absolute right-0 top-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="${icon} text-6xl transform rotate-12 -translate-y-2 translate-x-2 text-white"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#00f3ff] transition-colors truncate">${link.name}</h3>
+                        <p class="text-gray-400 text-xs mt-1 truncate font-mono text-[#00f3ff]/70">${new URL(link.url).hostname}</p>
+                        <div class="mt-4 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                            <span>ACCESS NODE</span>
+                            <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Add New Link
+        function submitLink(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('web-name').value;
+            const url = document.getElementById('web-url').value;
+            const btn = document.getElementById('btn-save');
+            const originalText = btn.innerHTML;
+
+            // UI Loading
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> PROCESSING...';
+            btn.disabled = true;
+
+            // Send Post Request
+            fetch(apiUrl, {
+                method: 'POST',
+                mode: 'no-cors', // Important for GAS
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify({ name: name, url: url })
+            })
+            .then(() => {
+                alert('Success: Data Injected!');
+                document.getElementById('add-form').reset();
+                closeModal('add-modal');
+                fetchLinks(); // Refresh Grid
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Injection Failed. Check console.');
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        // Utilities
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function getIconForUrl(urlString) {
+            try {
+                const url = new URL(urlString);
+                const domain = url.hostname;
+                if(domain.includes('google')) return 'fa-brands fa-google';
+                if(domain.includes('youtube')) return 'fa-brands fa-youtube';
+                if(domain.includes('facebook')) return 'fa-brands fa-facebook';
+                if(domain.includes('twitter') || domain.includes('x.com')) return 'fa-brands fa-twitter';
+                if(domain.includes('instagram')) return 'fa-brands fa-instagram';
+                if(domain.includes('github')) return 'fa-brands fa-github';
+                if(domain.includes('netflix')) return 'fa-solid fa-film';
+                return 'fa-solid fa-globe';
+            } catch (e) {
+                return 'fa-solid fa-link';
+            }
+        }
+
+        // Close modal on click outside
+        window.onclick = function(event) {
+            if (event.target.id === 'add-modal') closeModal('add-modal');
+        }
+    </script>
+</body>
+</html>
