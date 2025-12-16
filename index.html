@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Coolnut LifeStyle</title>
     
     <!-- Tailwind CSS -->
@@ -18,6 +18,7 @@
             --neon-blue: #00f3ff;
             --neon-pink: #ff00ff;
             --luxury-gold: #ffd700;
+            --neon-red: #ff3333;
             --bg-dark: #050505;
         }
 
@@ -46,12 +47,9 @@
         }
 
         /* Neon Glow Effects */
-        .glow-text-blue {
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
-        }
-        .glow-text-gold {
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-        }
+        .glow-text-blue { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+        .glow-text-gold { text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
+        .glow-text-red { text-shadow: 0 0 10px rgba(255, 51, 51, 0.7); }
 
         .cyber-btn {
             position: relative;
@@ -60,48 +58,45 @@
             transition: all 0.3s ease;
             overflow: hidden;
         }
-
         .cyber-btn:hover {
             background: rgba(0, 243, 255, 0.15);
             box-shadow: 0 0 15px var(--neon-blue);
             transform: translateY(-2px);
         }
-
-        .cyber-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .cyber-btn:hover::before {
-            left: 100%;
-        }
+        .cyber-btn:active { transform: scale(0.95); }
 
         .luxury-btn {
             border-color: var(--luxury-gold);
             background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
             color: var(--luxury-gold);
         }
-
         .luxury-btn:hover {
             background: rgba(255, 215, 0, 0.15);
             box-shadow: 0 0 15px var(--luxury-gold);
         }
 
+        /* Category Specific Borders & Glows */
+        .border-school { border-color: var(--neon-blue); }
+        .border-work { border-color: var(--luxury-gold); }
+        .border-dev { border-color: var(--neon-red); }
+
+        .hover-school:hover { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); }
+        .hover-work:hover { border-color: var(--luxury-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+        .hover-dev:hover { border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 51, 51, 0.2); }
+
+        .text-school { color: var(--neon-blue); }
+        .text-work { color: var(--luxury-gold); }
+        .text-dev { color: var(--neon-red); }
+
         /* Link Card Styles */
         .link-card {
             background: rgba(30, 30, 30, 0.6);
-            border-left: 3px solid var(--neon-blue);
+            border-left-width: 3px;
             transition: all 0.3s ease;
         }
         .link-card:hover {
-            border-left: 3px solid var(--neon-pink);
             background: rgba(40, 40, 40, 0.8);
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
         }
 
         /* Loading Spinner */
@@ -113,74 +108,114 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
-
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 250px;
+            opacity: 1;
+        }
+        
+        /* Select Input Styling */
+        select option {
+            background-color: #0a0a0a;
+            color: white;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center">
 
     <!-- Header -->
-    <header class="w-full max-w-6xl p-6 flex justify-between items-center z-10 relative">
+    <header class="w-full max-w-6xl p-4 md:p-6 flex justify-between items-center z-20 relative bg-black/20 backdrop-blur-sm sticky top-0 md:static border-b border-white/5 md:border-none">
         <div class="flex items-center gap-3">
-            <i class="fa-solid fa-microchip text-4xl text-[#00f3ff] animate-pulse"></i>
+            <i class="fa-solid fa-microchip text-3xl md:text-4xl text-[#00f3ff] animate-pulse"></i>
             <div>
-                <h1 class="font-cyber text-2xl md:text-3xl font-bold tracking-wider text-white">
+                <h1 class="font-cyber text-xl md:text-3xl font-bold tracking-wider text-white">
                     COOLNUT <span class="text-[#ffd700] glow-text-gold">LIFESTYLE</span>
                 </h1>
-                <p class="text-xs text-gray-400 tracking-[0.2em] uppercase">Hyperlink Gateway System</p>
+                <p class="text-[10px] md:text-xs text-gray-400 tracking-[0.2em] uppercase">Hyperlink Gateway System</p>
             </div>
         </div>
         
-        <div class="flex gap-3">
+        <!-- Desktop Actions -->
+        <div class="hidden md:flex gap-3">
             <button onclick="openAddModal()" class="cyber-btn luxury-btn px-4 py-2 rounded text-sm font-bold">
                 <i class="fa-solid fa-plus mr-2"></i> ADD LINK
             </button>
         </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden text-[#00f3ff] text-2xl px-2 focus:outline-none hover:text-white transition-colors">
+            <i id="hamburger-icon" class="fa-solid fa-bars"></i>
+        </button>
     </header>
 
-    <!-- Main Content -->
-    <main class="w-full max-w-6xl p-6 z-10 flex-grow">
-        
-        <!-- Status Bar removed as API is hardcoded -->
-
-        <!-- Search / Filter (Optional decoration) -->
-        <div class="w-full h-px bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent opacity-30 mb-8"></div>
-
-        <!-- Links Grid -->
-        <div id="links-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Dynamic Content Will Be Injected Here -->
-            
-            <!-- Loading State -->
-            <div id="loading-indicator" class="col-span-full flex flex-col items-center justify-center py-20 hidden">
-                <div class="loader mb-4"></div>
-                <p class="text-[#00f3ff] font-cyber tracking-widest animate-pulse">SYSTEM SYNCHRONIZING...</p>
-            </div>
-
-            <!-- Empty State -->
-            <div id="empty-state" class="col-span-full text-center py-20 hidden">
-                <i class="fa-solid fa-database text-6xl text-gray-700 mb-4"></i>
-                <p class="text-gray-500">NO DATA FOUND IN DATABASE</p>
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="w-full bg-[#111] border-b border-[#00f3ff]/30 md:hidden z-10 absolute top-[70px]">
+        <div class="p-4 flex flex-col gap-3">
+            <button onclick="openAddModal(); toggleMobileMenu()" class="w-full cyber-btn luxury-btn px-4 py-3 rounded text-sm font-bold flex items-center justify-center">
+                <i class="fa-solid fa-plus mr-2"></i> ADD NEW LINK
+            </button>
+            <div class="text-center text-[10px] text-gray-500 font-cyber mt-2">
+                SYSTEM STATUS: <span class="text-green-500">ONLINE</span>
             </div>
         </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-6xl p-4 md:p-6 z-10 flex-grow">
+        
+        <!-- Loading State -->
+        <div id="loading-indicator" class="flex flex-col items-center justify-center py-20 hidden">
+            <div class="loader mb-4"></div>
+            <p class="text-[#00f3ff] font-cyber tracking-widest animate-pulse">SYSTEM SYNCHRONIZING...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="text-center py-20 hidden">
+            <i class="fa-solid fa-database text-6xl text-gray-700 mb-4"></i>
+            <p class="text-gray-500">NO DATA FOUND IN DATABASE</p>
+        </div>
+
+        <!-- Categories Container -->
+        <div id="content-area">
+            <!-- Dynamic Content Will Be Injected Here -->
+        </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="w-full p-6 text-center text-gray-600 text-xs font-cyber z-10">
+    <footer class="w-full p-6 text-center text-gray-600 text-[10px] md:text-xs font-cyber z-10">
         <p>&copy; 2024 COOLNUT LIFESTYLE. ALL RIGHTS RESERVED. <span class="text-[#00f3ff]">SYSTEM ONLINE</span></p>
     </footer>
 
     <!-- ADD LINK MODAL -->
     <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md p-8 rounded-xl relative border border-[#ff00ff]/30 shadow-[0_0_30px_rgba(255,0,255,0.1)]">
-            <h2 class="font-cyber text-2xl text-[#ff00ff] mb-6 border-b border-[#ff00ff]/30 pb-2">ADD NEW NODE</h2>
+        <div class="glass-panel w-full max-w-md p-6 md:p-8 rounded-xl relative border border-[#ff00ff]/30 shadow-[0_0_30px_rgba(255,0,255,0.1)]">
+            <div class="flex justify-between items-center mb-6 border-b border-[#ff00ff]/30 pb-2">
+                <h2 class="font-cyber text-xl md:text-2xl text-[#ff00ff]">ADD NEW NODE</h2>
+                <button onclick="closeModal('add-modal')" class="text-gray-500 hover:text-white">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
             
             <form id="add-form" onsubmit="submitLink(event)">
+                <div class="mb-4">
+                    <label class="block text-xs text-[#00f3ff] mb-1 uppercase tracking-wider">Category (หมวดหมู่)</label>
+                    <select id="web-category" required
+                        class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 rounded focus:border-[#ff00ff] focus:outline-none focus:shadow-[0_0_10px_rgba(255,0,255,0.3)] transition-all appearance-none cursor-pointer">
+                        <option value="School Work">School Work (การเรียน)</option>
+                        <option value="My Work">My Work (งานส่วนตัว)</option>
+                        <option value="Dev Zone">Dev Zone (สำหรับ Developer)</option>
+                    </select>
+                </div>
+
                 <div class="mb-4">
                     <label class="block text-xs text-[#00f3ff] mb-1 uppercase tracking-wider">Web Name</label>
                     <input type="text" id="web-name" required placeholder="Ex. Youtube"
@@ -194,7 +229,7 @@
                 
                 <div class="flex justify-end gap-3">
                     <button type="button" onclick="closeModal('add-modal')" class="px-4 py-2 text-gray-400 hover:text-white transition-colors">CANCEL</button>
-                    <button type="submit" id="btn-save" class="bg-[#ff00ff]/20 border border-[#ff00ff] text-[#ff00ff] px-6 py-2 rounded hover:bg-[#ff00ff] hover:text-black transition-all font-bold tracking-wider">
+                    <button type="submit" id="btn-save" class="bg-[#ff00ff]/20 border border-[#ff00ff] text-[#ff00ff] px-6 py-2 rounded hover:bg-[#ff00ff] hover:text-black transition-all font-bold tracking-wider w-full md:w-auto">
                         <i class="fa-solid fa-save mr-2"></i> INJECT DATA
                     </button>
                 </div>
@@ -212,16 +247,31 @@
             fetchLinks();
         });
 
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('hamburger-icon');
+            
+            menu.classList.toggle('open');
+            
+            if (menu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
         // Fetch Data from Sheet
         function fetchLinks() {
             const loader = document.getElementById('loading-indicator');
-            const container = document.getElementById('links-container');
+            const contentArea = document.getElementById('content-area');
             const emptyState = document.getElementById('empty-state');
             
             loader.classList.remove('hidden');
-            container.innerHTML = ''; // Clear current
-            container.appendChild(loader); 
-            container.appendChild(emptyState);
+            contentArea.innerHTML = ''; // Clear current
+            emptyState.classList.add('hidden');
 
             fetch(apiUrl)
                 .then(response => response.json())
@@ -230,49 +280,79 @@
                     if (data.length === 0) {
                         emptyState.classList.remove('hidden');
                     } else {
-                        emptyState.classList.add('hidden');
-                        renderLinks(data);
+                        renderCategorizedLinks(data);
                     }
                 })
                 .catch(error => {
                     loader.classList.add('hidden');
-                    // Show error in console but keep UI clean, maybe show empty state
                     console.error('Error connecting to database:', error);
                     emptyState.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-6xl text-red-500 mb-4"></i><p class="text-red-400">CONNECTION ERROR</p>`;
                     emptyState.classList.remove('hidden');
                 });
         }
 
-        // Render Buttons
-        function renderLinks(links) {
-            const container = document.getElementById('links-container');
+        // Render Links Categorized
+        function renderCategorizedLinks(links) {
+            const contentArea = document.getElementById('content-area');
             
-            // Remove loader/empty state from view temporarily to append items
-            container.innerHTML = '';
+            // Define Categories Order and Styles
+            const categories = [
+                { id: 'School Work', title: 'SCHOOL WORK', icon: 'fa-graduation-cap', colorClass: 'text-school', borderClass: 'border-school', hoverClass: 'hover-school' },
+                { id: 'My Work', title: 'MY WORK', icon: 'fa-briefcase', colorClass: 'text-work', borderClass: 'border-work', hoverClass: 'hover-work' },
+                { id: 'Dev Zone', title: 'DEV ZONE', icon: 'fa-code', colorClass: 'text-dev', borderClass: 'border-dev', hoverClass: 'hover-dev' }
+            ];
+            
+            categories.forEach(cat => {
+                // Filter links for this category
+                // Default to 'My Work' if category is undefined (backward compatibility)
+                const catLinks = links.filter(link => {
+                    const c = link.category || 'My Work'; 
+                    return c === cat.id;
+                });
 
-            links.forEach(link => {
-                const card = document.createElement('a');
-                card.href = link.url;
-                card.target = "_blank";
-                card.className = "link-card block p-6 rounded-r-xl relative group overflow-hidden decoration-none";
-                
-                // Icon (Random or specific logic can be added)
-                const icon = getIconForUrl(link.url);
-
-                card.innerHTML = `
-                    <div class="absolute right-0 top-0 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i class="${icon} text-6xl transform rotate-12 -translate-y-2 translate-x-2 text-white"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-bold text-white group-hover:text-[#00f3ff] transition-colors truncate">${link.name}</h3>
-                        <p class="text-gray-400 text-xs mt-1 truncate font-mono text-[#00f3ff]/70">${new URL(link.url).hostname}</p>
-                        <div class="mt-4 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
-                            <span>ACCESS NODE</span>
-                            <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                if (catLinks.length > 0) {
+                    const section = document.createElement('div');
+                    section.className = "mb-10";
+                    
+                    // Section Header
+                    section.innerHTML = `
+                        <div class="flex items-center gap-3 mb-6 border-b border-gray-800 pb-2">
+                            <i class="fa-solid ${cat.icon} text-2xl ${cat.colorClass}"></i>
+                            <h2 class="font-cyber text-xl md:text-2xl font-bold text-white tracking-widest">${cat.title}</h2>
+                            <span class="text-xs text-gray-500 bg-[#111] px-2 py-1 rounded border border-gray-800">${catLinks.length} NODES</span>
                         </div>
-                    </div>
-                `;
-                container.appendChild(card);
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 link-grid-${cat.id}">
+                        </div>
+                    `;
+                    
+                    contentArea.appendChild(section);
+                    // Better select directly from the element we just created
+                    const gridContainer = section.lastElementChild;
+
+                    catLinks.forEach(link => {
+                        const card = document.createElement('a');
+                        card.href = link.url;
+                        card.target = "_blank";
+                        card.className = `link-card block p-6 rounded-r-xl relative group overflow-hidden decoration-none touch-manipulation active:scale-[0.98] transition-all border-l-4 ${cat.borderClass} ${cat.hoverClass}`;
+                        
+                        const icon = getIconForUrl(link.url);
+
+                        card.innerHTML = `
+                            <div class="absolute right-0 top-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <i class="${icon} text-6xl transform rotate-12 -translate-y-2 translate-x-2 text-white"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <h3 class="text-lg md:text-xl font-bold text-white transition-colors truncate">${link.name}</h3>
+                                <p class="text-gray-400 text-xs mt-1 truncate font-mono opacity-70">${new URL(link.url).hostname}</p>
+                                <div class="mt-4 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                                    <span class="${cat.colorClass}">ACCESS</span>
+                                    <i class="fa-solid fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                </div>
+                            </div>
+                        `;
+                        gridContainer.appendChild(card);
+                    });
+                }
             });
         }
 
@@ -280,6 +360,7 @@
         function submitLink(e) {
             e.preventDefault();
             
+            const category = document.getElementById('web-category').value;
             const name = document.getElementById('web-name').value;
             const url = document.getElementById('web-url').value;
             const btn = document.getElementById('btn-save');
@@ -289,20 +370,20 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> PROCESSING...';
             btn.disabled = true;
 
-            // Send Post Request
+            // Send Post Request with Category
             fetch(apiUrl, {
                 method: 'POST',
-                mode: 'no-cors', // Important for GAS
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'text/plain;charset=utf-8',
                 },
-                body: JSON.stringify({ name: name, url: url })
+                body: JSON.stringify({ name: name, url: url, category: category })
             })
             .then(() => {
                 alert('Success: Data Injected!');
                 document.getElementById('add-form').reset();
                 closeModal('add-modal');
-                fetchLinks(); // Refresh Grid
+                fetchLinks(); // Refresh
             })
             .catch(err => {
                 console.error(err);
@@ -315,13 +396,8 @@
         }
 
         // Utilities
-        function openAddModal() {
-            document.getElementById('add-modal').classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
+        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function getIconForUrl(urlString) {
             try {
@@ -334,13 +410,13 @@
                 if(domain.includes('instagram')) return 'fa-brands fa-instagram';
                 if(domain.includes('github')) return 'fa-brands fa-github';
                 if(domain.includes('netflix')) return 'fa-solid fa-film';
+                if(domain.includes('stackoverflow')) return 'fa-brands fa-stack-overflow';
                 return 'fa-solid fa-globe';
             } catch (e) {
                 return 'fa-solid fa-link';
             }
         }
 
-        // Close modal on click outside
         window.onclick = function(event) {
             if (event.target.id === 'add-modal') closeModal('add-modal');
         }
